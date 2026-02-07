@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des visiteurs</title>
+</head>
+<body>
+
+<h2>📋 Liste des visiteurs</h2>
+
+<ul id="liste"></ul>
+
+<br>
+<a href="index.html">⬅ Retour</a>
+
+<script>
+  // MOT DE PASSE
+  let motDePasse = prompt("Entrez le mot de passe :");
+
+  if (motDePasse !== "Samuel") {
+    alert("Mot de passe incorrect ❌");
+    window.location.href = "index.html";
+  }
+
+  let visiteurs = JSON.parse(localStorage.getItem("visiteurs")) || [];
+  let liste = document.getElementById("liste");
+
+  function afficher() {
+    liste.innerHTML = "";
+
+    if (visiteurs.length === 0) {
+      liste.innerHTML = "<li>Aucun visiteur enregistré</li>";
+      return;
+    }
+
+    visiteurs.forEach((v, index) => {
+      let li = document.createElement("li");
+      li.innerHTML = `
+        <b>${index + 1}. ${v.nom}</b><br>
+        Motif : ${v.motif}<br>
+        Date & Heure : ${v.dateHeure}<br>
+        <button onclick="supprimer(${index})">🗑 Supprimer</button>
+        <hr>
+      `;
+      liste.appendChild(li);
+    });
+  }
+
+  function supprimer(index) {
+    if (confirm("Supprimer ce visiteur ?")) {
+      visiteurs.splice(index, 1);
+      localStorage.setItem("visiteurs", JSON.stringify(visiteurs));
+      afficher();
+    }
+  }
+
+  afficher();
+</script>
+
+</body>
+  </html>
